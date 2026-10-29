@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prank!</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        /* Ukuran GIF dibuat sekitar separuh layar */
+        .gif-container img {
+            max-width: 80vw;
+            max-height: 50vh;
+            width: auto;
+            height: auto;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+            object-fit: contain;
+        }
+
+        .text-main {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #ff4757;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
+            line-height: 1.4;
+        }
+
+        /* Ukuran hashtag dibuat lebih kecil */
+        .hashtag {
+            font-size: 0.9rem;
+            color: #a4b0be;
+            font-style: italic;
+            letter-spacing: 1px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Teks Utama Prank -->
+        <div class="text-main">
+            Mau liat apa? Kena juga kan lo! 🤪
+        </div>
+
+        <!-- Foto GIF (Ukuran ~separuh layar) -->
+        <div class="gif-container">
+            <img src="https://raw.githubusercontent.com/bangzhaa47/PRANK/main/foto2.gif" alt="Prank GIF">
+        </div>
+
+        <!-- Hashtag Ukuran Kecil -->
+        <div class="hashtag">
+            #by KENTUT.BERKUAH
+        </div>
+    </div>
+
+</body>
+</html>
