@@ -22,6 +22,7 @@
             min-height: 100vh;
             text-align: center;
             padding: 20px;
+            cursor: pointer; /* Indikator bahwa halaman bisa diklik untuk memutar suara */
         }
 
         .container {
@@ -64,6 +65,13 @@
 </head>
 <body>
 
+    <!-- Audio Element untuk Backsound -->
+    <!-- Catatan: Sesuaikan nama file 'backsound.mp3' jika nama file di repo Anda berbeda -->
+    <audio id="bg-audio" loop>
+        <source src="https://raw.githubusercontent.com/bangzhaa47/PRANK/main/lawak.mp3" type="audio/mpeg">
+        Browser Anda tidak mendukung elemen audio.
+    </audio>
+
     <div class="container">
         <!-- Teks Utama Prank -->
         <div class="text-main">
@@ -80,6 +88,30 @@
             #by KENTUT.BERKUAH
         </div>
     </div>
+
+    <script>
+        const audio = document.getElementById('bg-audio');
+
+        // Kebijakan browser modern memblokir autoplay audio tanpa interaksi pengguna.
+        // Script ini akan langsung memutar suara begitu pengguna mengeklik/mengetuk di mana saja pada layar.
+        function playAudio() {
+            audio.play().then(() => {
+                console.log("Audio berhasil diputar!");
+            }).catch(error => {
+                console.log("Menunggu interaksi pengguna untuk memutar audio.");
+            });
+            // Hapus event listener setelah pertama kali diklik agar tidak dipanggil berulang
+            document.removeEventListener('click', playAudio);
+            document.removeEventListener('touchstart', playAudio);
+        }
+
+        // Coba putar otomatis langsung
+        audio.play().catch(() => {
+            // Jika diblokir oleh browser, putar saat ada interaksi pertama
+            document.addEventListener('click', playAudio);
+            document.addEventListener('touchstart', playAudio);
+        });
+    </script>
 
 </body>
 </html>
