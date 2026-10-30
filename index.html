@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prank!</title>
+    <title>Ada Hadiah Buat Kamu!</title>
     <style>
         * {
             margin: 0;
@@ -22,7 +22,7 @@
             min-height: 100vh;
             text-align: center;
             padding: 20px;
-            cursor: pointer; /* Indikator bahwa halaman bisa diklik untuk memutar suara */
+            cursor: pointer;
         }
 
         .container {
@@ -34,8 +34,8 @@
             gap: 20px;
         }
 
-        /* Ukuran GIF dibuat sekitar separuh layar */
-        .gif-container img {
+        /* Styling Gambar (Kado / Prank) */
+        .media-container img {
             max-width: 80vw;
             max-height: 50vh;
             width: auto;
@@ -43,6 +43,11 @@
             border-radius: 12px;
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
             object-fit: contain;
+            transition: transform 0.2s ease;
+        }
+
+        .media-container img:hover {
+            transform: scale(1.02);
         }
 
         .text-main {
@@ -51,66 +56,95 @@
             color: #ff4757;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
             line-height: 1.4;
+            display: none; /* Disembunyikan dulu sebelum kado diklik */
         }
 
-        /* Ukuran hashtag dibuat lebih kecil */
+        /* Teks Instruksi Awal */
+        .instruction {
+            font-size: 1.2rem;
+            color: #2ed573;
+            font-weight: bold;
+            animation: bounce 1.5s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        /* Hashtag Ukuran Kecil */
         .hashtag {
             font-size: 0.9rem;
             color: #a4b0be;
             font-style: italic;
             letter-spacing: 1px;
             margin-top: 10px;
+            display: none; /* Disembunyikan dulu sebelum kado diklik */
         }
     </style>
 </head>
 <body>
 
     <!-- Audio Element untuk Backsound -->
-    <!-- Catatan: Sesuaikan nama file 'backsound.mp3' jika nama file di repo Anda berbeda -->
+    <!-- Catatan: Ganti 'backsound.mp3' jika nama file audionya berbeda di repo Anda -->
     <audio id="bg-audio" loop>
         <source src="https://raw.githubusercontent.com/bangzhaa47/PRANK/main/lawak.mp3" type="audio/mpeg">
         Browser Anda tidak mendukung elemen audio.
     </audio>
 
-    <div class="container">
-        <!-- Teks Utama Prank -->
-        <div class="text-main">
+    <div class="container" id="main-box">
+        <!-- Teks Instruksi Kado -->
+        <div class="instruction" id="instruction-text">🎁 Yeay! Kamu dapat hadiah spesial, klik kadonya!</div>
+
+        <!-- Teks Utama Prank (Muncul setelah diklik) -->
+        <div class="text-main" id="prank-text">
             Mau liat apa? Kena juga kan lo! 🤪
         </div>
 
-        <!-- Foto GIF (Ukuran ~separuh layar) -->
-        <div class="gif-container">
-            <img src="https://raw.githubusercontent.com/bangzhaa47/PRANK/main/foto2.gif" alt="Prank GIF">
+        <!-- Gambar: Awalnya Kado, berubah jadi GIF Prank setelah diklik -->
+        <div class="media-container">
+            <!-- Ganti link gambar kado di bawah jika ingin pakai gambar kado lain dari internet -->
+            <img id="prank-image" src="https://images.unsplash.com/photo-1513151233558-d860c5398176?w=600&auto=format&fit=crop&q=80" alt="Kotak Kado">
         </div>
 
-        <!-- Hashtag Ukuran Kecil -->
-        <div class="hashtag">
+        <!-- Hashtag (Muncul setelah diklik) -->
+        <div class="hashtag" id="hashtag-text">
             #by KENTUT.BERKUAH
         </div>
     </div>
 
     <script>
+        const mainBox = document.getElementById('main-box');
         const audio = document.getElementById('bg-audio');
+        const prankImage = document.getElementById('prank-image');
+        const prankText = document.getElementById('prank-text');
+        const instructionText = document.getElementById('instruction-text');
+        const hashtagText = document.getElementById('hashtag-text');
 
-        // Kebijakan browser modern memblokir autoplay audio tanpa interaksi pengguna.
-        // Script ini akan langsung memutar suara begitu pengguna mengeklik/mengetuk di mana saja pada layar.
-        function playAudio() {
-            audio.play().then(() => {
-                console.log("Audio berhasil diputar!");
-            }).catch(error => {
-                console.log("Menunggu interaksi pengguna untuk memutar audio.");
+        let isOpened = false;
+
+        // Fungsi saat kado diklik
+        function openGift(e) {
+            if (isOpened) return; // Mencegah dieksekusi berulang kali
+            isOpened = true;
+
+            // 1. Putar musik langsung berkat interaksi klik ini
+            audio.play().catch(error => {
+                console.log("Audio gagal diputar:", error);
             });
-            // Hapus event listener setelah pertama kali diklik agar tidak dipanggil berulang
-            document.removeEventListener('click', playAudio);
-            document.removeEventListener('touchstart', playAudio);
+
+            // 2. Ubah gambar kado menjadi GIF Prank dari repository Anda
+            prankImage.src = "https://raw.githubusercontent.com/bangzhaa47/PRANK/main/foto2.gif";
+
+            // 3. Sembunyikan teks instruksi kado, lalu tampilkan teks prank & hashtag
+            instructionText.style.display = 'none';
+            prankText.style.display = 'block';
+            hashtagText.style.display = 'block';
         }
 
-        // Coba putar otomatis langsung
-        audio.play().catch(() => {
-            // Jika diblokir oleh browser, putar saat ada interaksi pertama
-            document.addEventListener('click', playAudio);
-            document.addEventListener('touchstart', playAudio);
-        });
+        // Event listener saat area kado / halaman diklik
+        mainBox.addEventListener('click', openGift);
+        mainBox.addEventListener('touchstart', openGift);
     </script>
 
 </body>
